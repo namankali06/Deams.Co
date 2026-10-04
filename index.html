@@ -43,40 +43,8 @@
     </div>
   </section>
 
-  <!-- ═══════════════════════════════════════════════ MARQUEE STRIP -->
-  <div class="marquee-strip" aria-hidden="true">
-    <div class="marquee-track">
-      <span>Brand Identity</span><span class="dot">·</span>
-      <span>Digital Experience</span><span class="dot">·</span>
-      <span>Motion Design</span><span class="dot">·</span>
-      <span>Creative Direction</span><span class="dot">·</span>
-      <span>UI/UX Design</span><span class="dot">·</span>
-      <span>Web Development</span><span class="dot">·</span>
-      <span>Brand Identity</span><span class="dot">·</span>
-      <span>Digital Experience</span><span class="dot">·</span>
-      <span>Motion Design</span><span class="dot">·</span>
-      <span>Creative Direction</span><span class="dot">·</span>
-      <span>UI/UX Design</span><span class="dot">·</span>
-      <span>Web Development</span><span class="dot">·</span>
-    </div>
-  </div>
-
   <!-- ═══════════════════════════════════════════════ WORK SECTION -->
-  <section class="section work-section" id="work" style="position: relative; overflow: hidden; min-height: 100dvh; display: flex; align-items: center; justify-content: center;">
-    <!-- Mood Field Background Canvas -->
-    <canvas id="moodFieldCanvas" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block; z-index: 0;"></canvas>
-    <div id="imageStreamContainer" style="position: absolute; inset: 0; z-index: 1; pointer-events: none;"></div>
-    
-    <!-- Title Over the Stream -->
-    <div style="position: relative; z-index: 2; text-align: center; pointer-events: none; transform: translateY(-120px);">
-      <h2 style="font-family: var(--f-display); font-size: clamp(24px, 5vw, 52px); font-weight: 500; color: #fff; line-height: 1.1; margin-bottom: 12px; text-shadow: 0 4px 24px rgba(0,0,0,0.5);">
-        Your work,<br>front and centre.
-      </h2>
-      <p style="font-family: var(--f-body); color: rgba(255,255,255,0.7); max-width: 400px; margin: 0 auto; font-size: 14px;">
-        A hero that leads with the images instead of describing them.
-      </p>
-    </div>
-  </section>
+  <section class="section works-wheel-section" id="work"></section>
 
   <!-- ═══════════════════════════════════════════════ ABOUT SECTION -->
   <section class="section about-section" id="about">
@@ -1325,5 +1293,23 @@
   </footer>
 
   <script type="module" src="script.js"></script>
+  <script src="works-wheel.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const ART = (name) => `https://www.crafterui.com/art/${name}.jpg`;
+      const WORKS = [
+        { title: "Prismatic Rift", image: ART("prismatic-rift-anime"), href: "https://instagram.com" },
+        { title: "Ember Clouds", image: ART("black-hole-ember-clouds"), href: "https://instagram.com" },
+        { title: "Neon Portal", image: ART("neon-cave-portal-silhouette"), href: "https://instagram.com" },
+        { title: "Red Ribbon", image: ART("red-ribbon-typography"), href: "https://instagram.com" },
+        { title: "Celestial", image: ART("celestial-light-figure"), href: "https://instagram.com" },
+        { title: "Uplight", image: ART("neon-portrait-uplight"), href: "https://instagram.com" },
+        { title: "Indigo Marble", image: ART("indigo-liquid-marble"), href: "https://instagram.com" },
+        { title: "Launch Window", image: ART("rocket-launch-gradient"), href: "https://instagram.com" },
+        { title: "Cosmic Wave", image: ART("astronaut-cosmic-wave"), href: "https://instagram.com" },
+      ];
+      new WorksWheel(document.querySelector('.works-wheel-section'), WORKS);
+    });
+  </script>
 </body>
 </html>

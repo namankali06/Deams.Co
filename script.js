@@ -4,10 +4,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { TextPlugin } from 'gsap/TextPlugin';
 import Lenis from 'lenis';
-import { initJourneyResponsive } from './journey.js';
 import { initWireTerrain } from './wire-terrain.js';
-import { initMoodField } from './mood-field.js';
-import { initImageStream } from './image-stream.js';
 
 /* ══════════════════════════════════════════════════════
    PORTFOLIO — Script.js
@@ -43,10 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
   gsap.ticker.lagSmoothing(0);
   lenis.on('scroll', ScrollTrigger.update);
 
-  /* ══════════════════════════════
-     JOURNEY — 3D Brand Expedition
-  ══════════════════════════════ */
-  initJourneyResponsive();
+
 
 
   /* ══════════════════════════════
@@ -56,19 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
   if (canvas) {
     initWireTerrain(canvas);
   }
-
-  const moodCanvas = document.getElementById('moodFieldCanvas');
-  if (moodCanvas) {
-    initMoodField(moodCanvas);
-  }
-
-  const imageStreamContainer = document.getElementById('imageStreamContainer');
-  if (imageStreamContainer) {
-    initImageStream(imageStreamContainer);
-  }
-
-
-
 
   /* ══════════════════════════════
      4. MAGNETIC BUTTON EFFECT
@@ -205,25 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
-  /* ══════════════════════════════════════════════════════════
-     9. MARQUEE — velocity-aware speed + 3D entrance
-  ══════════════════════════════════════════════════════════ */
-  const marquee = document.querySelector('.marquee-track');
-  if (marquee) {
-    // 3D tilt on enter
-    gsap.fromTo('.marquee-strip',
-      { rotateX: 30, opacity: 0, y: 40 },
-      {
-        rotateX: 0, opacity: 1, y: 0,
-        duration: 1.2, ease: EXPO_G,
-        scrollTrigger: { trigger: '.marquee-strip', start: 'top 95%' }
-      }
-    );
 
-    // Slow on hover
-    marquee.parentElement.addEventListener('mouseenter', () => { marquee.style.animationPlayState = 'paused'; });
-    marquee.parentElement.addEventListener('mouseleave', () => { marquee.style.animationPlayState = 'running'; });
-  }
 
 
 
