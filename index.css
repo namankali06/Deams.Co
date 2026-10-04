@@ -132,9 +132,9 @@ ul { list-style: none; }
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(236, 228, 213, 0.85);
+  background: rgba(5, 6, 10, 0.7); /* Dark semi-transparent background */
   backdrop-filter: blur(20px) saturate(130%);
-  border-bottom: 1px solid var(--c-border);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* Subtle light border */
   z-index: -1;
   opacity: 0;
   transition: opacity 0.4s ease;
@@ -147,17 +147,17 @@ ul { list-style: none; }
   font-size: 18px;
   font-weight: 700;
   letter-spacing: -0.02em;
-  color: var(--c-ink);
+  color: #ffffff; /* White logo */
   transition: color var(--dur-fast) ease;
 }
 
-.nav-logo:hover { color: var(--c-brown); }
+.nav-logo:hover { color: rgba(255,255,255,0.7); }
 
 .nav-pill {
   display: flex;
   gap: 0;
-  background: rgba(0,0,0,0.06);
-  border: 1px solid var(--c-border);
+  background: rgba(255,255,255,0.06); /* Lighter translucent background for dark theme */
+  border: 1px solid rgba(255,255,255,0.1);
   border-radius: var(--r-full);
   padding: 5px;
 }
@@ -167,7 +167,7 @@ ul { list-style: none; }
   font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.02em;
-  color: var(--c-ink);
+  color: #ffffff; /* White items */
   padding: var(--sp-1) var(--sp-6);
   border-radius: var(--r-full);
   transition: background var(--dur-fast) ease, color var(--dur-fast) ease;
@@ -175,8 +175,8 @@ ul { list-style: none; }
 
 .nav-item:hover,
 .nav-item.is-active {
-  background: var(--c-ink);
-  color: var(--c-bg);
+  background: #ffffff;
+  color: #05060a; /* Dark text on hover */
 }
 
 /* ─────────────────────────────────────────

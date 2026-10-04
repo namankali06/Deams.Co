@@ -9,15 +9,7 @@
    JOURNEY STAGE — fixed overlay container
 ───────────────────────────────────────── */
 #journey-stage {
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 60px;
-  height: 100vh;
-  z-index: 200;
-  pointer-events: none;
-  /* Fade out when user reaches the very bottom */
-  transition: opacity 0.5s ease;
+  display: none !important;
 }
 
 #journey-stage.is-complete {
@@ -93,18 +85,7 @@
    ALTITUDE COUNTER
 ───────────────────────────────────────── */
 #journey-altitude {
-  position: fixed;
-  bottom: 28px;
-  right: 72px;
-  display: flex;
-  align-items: baseline;
-  gap: 3px;
-  font-family: "DM Sans", sans-serif;
-  font-size: 9px;
-  letter-spacing: 0.12em;
-  color: rgba(255,175,55,0.55);
-  pointer-events: none;
-  font-variant-numeric: tabular-nums;
+  display: none !important;
 }
 
 #journey-altitude-val {
