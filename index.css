@@ -68,56 +68,50 @@ body {
   font-size: 15px;
   line-height: 1.5;
   overflow-x: hidden;
-  cursor: none;
+  /* 3D perspective applied per-element via GSAP transformPerspective */
 }
 
-body.is-loading * { cursor: none; }
+body.is-loading * { pointer-events: none; }
 
 img, video { max-width: 100%; display: block; }
 a { text-decoration: none; color: inherit; }
 ul { list-style: none; }
 
 /* ─────────────────────────────────────────
-   CUSTOM CURSOR
+   3D SCROLL FOUNDATIONS
+   Enable GPU compositing for every animated
+   element to prevent paint jank.
 ───────────────────────────────────────── */
-.cursor {
-  position: fixed;
-  top: 0; left: 0;
-  z-index: 9999;
-  pointer-events: none;
-  mix-blend-mode: difference;
+.section,
+.hero,
+.marquee-strip,
+.services-strip,
+.footer-section {
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
 }
 
-.cursor-dot {
-  position: absolute;
-  width: 6px; height: 6px;
-  background: var(--c-ink);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  transition: transform 0.1s var(--ease-expo);
+.work-item,
+.stat,
+.about-text-col,
+.about-visual-col,
+.service-item,
+.footer-title,
+.about-img-frame,
+.hero-title .line {
+  will-change: transform, opacity;
+  transform-style: preserve-3d;
 }
 
-.cursor-ring {
-  position: absolute;
-  width: 40px; height: 40px;
-  border: 1.5px solid var(--c-ink);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  transition: 
-    width var(--dur-fast) var(--ease-expo),
-    height var(--dur-fast) var(--ease-expo),
-    opacity var(--dur-fast) ease;
-  opacity: 0.7;
+/* Sticky scroll context — sections stack like cards */
+.section {
+  position: relative;
+  z-index: 1;
+  /* stacking isolation so exit-scale doesn't bleed */
+  isolation: isolate;
 }
 
-.cursor.is-hovered .cursor-ring {
-  width: 80px; height: 80px;
-  opacity: 1;
-}
 
-.cursor.is-hovered .cursor-dot {
-  transform: translate(-50%, -50%) scale(2);
-}
 
 /* ─────────────────────────────────────────
    NAVIGATION
@@ -355,6 +349,7 @@ ul { list-style: none; }
   width: 100%;
   max-width: 1200px;
   padding-bottom: 80px;
+  perspective: 1000px; /* For GSAP 3D mouse parallax */
 }
 
 .hero-eyebrow {
@@ -381,6 +376,8 @@ ul { list-style: none; }
   color: #ffffff;
   margin-bottom: var(--sp-7);
   text-shadow: 0 2px 40px rgba(0,0,0,0.25);
+  transform-style: preserve-3d;
+  will-change: transform;
 }
 
 .hero-title .italic-word {
@@ -611,7 +608,7 @@ ul { list-style: none; }
   padding: var(--sp-8) 0;
   gap: var(--sp-8);
   transition: all var(--dur-fast) var(--ease-out);
-  cursor: none;
+  cursor: pointer;
 }
 
 .work-item-inner:hover .work-img {
@@ -629,6 +626,8 @@ ul { list-style: none; }
 
 .work-item-left {
   flex: 1;
+  padding-right: var(--sp-8);
+  min-width: 0; /* allows text to wrap without pushing flex boundaries */
 }
 
 .work-meta {
@@ -662,6 +661,7 @@ ul { list-style: none; }
   color: var(--c-ink);
   transition: color var(--dur-fast) ease;
   overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .work-item-right {

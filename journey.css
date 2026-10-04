@@ -1,0 +1,193 @@
+/* ═══════════════════════════════════════════════════════════════════
+   journey.css
+   Styles for the scroll-driven "Brand Expedition" overlay.
+   All values use Solare design tokens.
+   Never touches existing page layout — overlay only.
+═══════════════════════════════════════════════════════════════════ */
+
+/* ─────────────────────────────────────────
+   JOURNEY STAGE — fixed overlay container
+───────────────────────────────────────── */
+#journey-stage {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 60px;
+  height: 100vh;
+  z-index: 200;
+  pointer-events: none;
+  /* Fade out when user reaches the very bottom */
+  transition: opacity 0.5s ease;
+}
+
+#journey-stage.is-complete {
+  opacity: 0;
+}
+
+/* ─────────────────────────────────────────
+   ROUTE SVG
+───────────────────────────────────────── */
+#journey-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Stop dots */
+.journey-dot {
+  transition: r 0.3s cubic-bezier(0.19, 1, 0.22, 1),
+              fill 0.3s ease;
+}
+
+.journey-dot.is-active {
+  fill: #FFAF37;
+  r: 6px; /* SVG attribute animation via CSS — supported in modern browsers */
+  filter: drop-shadow(0 0 6px rgba(255,175,55,0.8));
+}
+
+.journey-label {
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+  font-size: 7px;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ─────────────────────────────────────────
+   TRAVELLING MARKER — "you are here"
+───────────────────────────────────────── */
+#journey-marker {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 14px;
+  height: 14px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.journey-marker-dot {
+  position: absolute;
+  inset: 3px;
+  background: #FFAF37;
+  border-radius: 50%;
+}
+
+.journey-marker-ring {
+  position: absolute;
+  inset: 0;
+  border: 1.5px solid rgba(255,175,55,0.6);
+  border-radius: 50%;
+  animation: markerPulse 2s ease-in-out infinite;
+}
+
+@keyframes markerPulse {
+  0%, 100% { transform: scale(1);   opacity: 0.8; }
+  50%       { transform: scale(1.8); opacity: 0;   }
+}
+
+/* ─────────────────────────────────────────
+   ALTITUDE COUNTER
+───────────────────────────────────────── */
+#journey-altitude {
+  position: fixed;
+  bottom: 28px;
+  right: 72px;
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: rgba(255,175,55,0.55);
+  pointer-events: none;
+  font-variant-numeric: tabular-nums;
+}
+
+#journey-altitude-val {
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255,175,55,0.75);
+  min-width: 60px;
+  text-align: right;
+  transition: color 0.3s ease;
+}
+
+#journey-altitude-unit {
+  text-transform: lowercase;
+  opacity: 0.7;
+}
+
+/* ─────────────────────────────────────────
+   SECTION 3D CONTEXT
+   Give each stop section the right CSS properties
+   so GSAP rotationX/Y/Z renders correctly.
+   These DON'T override existing layout — only
+   transform context and GPU compositing hints.
+───────────────────────────────────────── */
+[data-journey-stop] {
+  transform-style: preserve-3d;
+  /* Perspective is set via GSAP transformPerspective,
+     not here, so each section has its own context */
+}
+
+/* ─────────────────────────────────────────
+   SPLIT TEXT — overflow clip
+   Prevents split chars from being visible
+   before their reveal animation fires.
+───────────────────────────────────────── */
+.split-line {
+  overflow: hidden;
+  display: block;
+}
+
+/* ─────────────────────────────────────────
+   DESTINATION WASH
+   Warm golden overlay that fades in when
+   the footer/contact section enters view.
+───────────────────────────────────────── */
+.footer-section.is-destination::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 50% 0%,
+    rgba(255,175,55,0.12) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  animation: destinationGlow 2s ease-out forwards;
+  z-index: 0;
+}
+
+@keyframes destinationGlow {
+  from { opacity: 0; transform: scaleY(0.6); }
+  to   { opacity: 1; transform: scaleY(1);   }
+}
+
+/* ─────────────────────────────────────────
+   RESPONSIVE — hide overlay on mobile
+───────────────────────────────────────── */
+@media (max-width: 899px) {
+  #journey-stage,
+  #journey-altitude {
+    display: none;
+  }
+}
+
+/* ─────────────────────────────────────────
+   REDUCED MOTION — hide everything
+───────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  #journey-stage,
+  #journey-altitude {
+    display: none;
+  }
+  [data-journey-stop] {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
