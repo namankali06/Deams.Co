@@ -6,6 +6,7 @@ import { TextPlugin } from 'gsap/TextPlugin';
 import Lenis from 'lenis';
 import { initJourneyResponsive } from './journey.js';
 import { initWireTerrain } from './wire-terrain.js';
+import { initMoodField } from './mood-field.js';
 
 /* ══════════════════════════════════════════════════════
    PORTFOLIO — Script.js
@@ -53,6 +54,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const canvas = document.getElementById('heroCanvas');
   if (canvas) {
     initWireTerrain(canvas);
+  }
+
+  const moodCanvas = document.getElementById('moodFieldCanvas');
+  if (moodCanvas) {
+    initMoodField(moodCanvas);
   }
 
 
@@ -214,58 +220,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
-  /* ══════════════════════════════════════════════════════════
-     10. WORK SECTION — 3D stagger cards rising from below
-         Dividers draw in from left (transform origin)
-  ══════════════════════════════════════════════════════════ */
-
-  // Section label + title reveal
-  gsap.fromTo('.work-section .section-label',
-    { opacity:0, y:20 },
-    { opacity:1, y:0, duration:0.9, ease: SOFT,
-      scrollTrigger: { trigger: '.work-section .section-header', start: 'top 88%' } }
-  );
-  gsap.fromTo('.work-section .section-title',
-    { clipPath:'inset(0 0 100% 0)', opacity:0 },
-    { clipPath:'inset(0 0 0% 0)',   opacity:1, duration:1.3, ease: EXPO_G,
-      scrollTrigger: { trigger: '.work-section .section-header', start: 'top 86%' } }
-  );
-
-  gsap.utils.toArray('.work-item').forEach((item, i) => {
-    const inner = item.querySelector('.work-item-inner');
-    const meta  = item.querySelector('.work-meta');
-    const title = item.querySelector('.work-item-title');
-    const img   = item.querySelector('.work-img-wrap');
-    const divider = item.querySelector('.work-divider');
-
-    // 3D rise with individual stagger delay
-    gsap.fromTo(item,
-      { opacity:0, y:70, rotateX:14, z:-60 },
-      { opacity:1, y:0,  rotateX:0,  z:0,
-        duration: 1.1, delay: i * 0.09, ease: EXPO_G,
-        scrollTrigger: { trigger: item, start: 'top 88%' }
-      }
-    );
-
-    // Divider draws in
-    if (divider) {
-      gsap.set(divider, { transformOrigin: 'left center' });
-      gsap.fromTo(divider, { scaleX:0 }, {
-        scaleX:1, duration:1.4, ease: EXPO_G,
-        scrollTrigger: { trigger: item, start: 'top 88%' }
-      });
-    }
-
-    // Image reveal on hover — subtle 3D tilt
-    if (inner && img) {
-      inner.addEventListener('mouseenter', () => {
-        gsap.to(img, { rotateY:4, rotateX:-3, scale:1.03, duration:0.5, ease: SOFT });
-      });
-      inner.addEventListener('mouseleave', () => {
-        gsap.to(img, { rotateY:0, rotateX:0,  scale:1.00, duration:0.7, ease: EXPO_G });
-      });
-    }
-  });
 
 
   /* ══════════════════════════════════════════════════════════
