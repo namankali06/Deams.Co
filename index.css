@@ -56,6 +56,12 @@
 ───────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+}
+
 html {
   scroll-behavior: auto; /* Lenis handles this */
   font-size: 16px;
@@ -883,11 +889,11 @@ ul { list-style: none; }
 }
 
 @media (max-width: 768px) {
-  .hero { padding: 100px var(--sp-7) var(--sp-9); }
-  .section { padding: var(--sp-9) var(--sp-7); }
+  .hero { padding: 80px var(--sp-4) var(--sp-6); } /* Reduced padding for mobile */
+  .section { padding: var(--sp-6) var(--sp-4); } /* Reduced horizontal padding */
 
   .nav-pill { display: none; }
-  .nav { padding: var(--sp-5) var(--sp-7); }
+  .nav { padding: var(--sp-4) var(--sp-4); } /* Less padding for nav on mobile */
 
   .work-item-inner {
     flex-direction: column;
