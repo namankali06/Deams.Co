@@ -320,28 +320,7 @@ ul { list-style: none; }
   pointer-events: none;
 }
 
-/* Warm ambient light orb (CSS layer — supplements WebGL) */
-.hero-orb {
-  position: absolute;
-  top: 5%;
-  right: -5%;
-  width: 750px;
-  height: 750px;
-  border-radius: 50%;
-  background: radial-gradient(circle at center,
-    rgba(255,175,55,0.22) 0%,
-    rgba(255,175,55,0.06) 45%,
-    transparent 70%);
-  pointer-events: none;
-  z-index: 1;
-  animation: orbPulse 7s ease-in-out infinite alternate;
-  mix-blend-mode: screen;
-}
 
-@keyframes orbPulse {
-  from { transform: scale(1)    translateY(0px);  opacity: 0.6; }
-  to   { transform: scale(1.12) translateY(-20px); opacity: 1.0; }
-}
 
 .hero-inner {
   position: relative;
@@ -352,20 +331,13 @@ ul { list-style: none; }
   perspective: 1000px; /* For GSAP 3D mouse parallax */
 }
 
-.hero-eyebrow {
+.center-content {
   display: flex;
   align-items: center;
-  gap: var(--sp-5);
-  font-family: var(--f-body);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.65);
-  margin-bottom: var(--sp-6);
+  justify-content: center;
+  height: 100vh;
+  padding-bottom: 0;
 }
-
-.sep { color: var(--c-accent); opacity: 0.8; }
 
 .hero-title {
   font-family: var(--f-display);
@@ -374,15 +346,14 @@ ul { list-style: none; }
   line-height: 0.9;
   letter-spacing: -0.04em;
   color: #ffffff;
-  margin-bottom: var(--sp-7);
   text-shadow: 0 2px 40px rgba(0,0,0,0.25);
   transform-style: preserve-3d;
   will-change: transform;
 }
 
-.hero-title .italic-word {
-  font-style: italic;
-  color: var(--c-accent);
+.centered-title {
+  text-align: center;
+  margin-bottom: 0;
 }
 
 /* Line-wrap clip container */
@@ -396,81 +367,7 @@ ul { list-style: none; }
   will-change: transform;
 }
 
-.typewriter-cursor {
-  font-family: var(--f-display);
-  font-size: 1.1em;
-  font-weight: 300;
-  color: var(--c-accent);
-  display: inline-block;
-  margin-left: 0.1em;
-  animation: cursorBlink 0.8s infinite;
-  vertical-align: text-top;
-}
 
-@keyframes cursorBlink {
-  0%, 40% { opacity: 1; }
-  60%, 100% { opacity: 0; }
-}
-
-.hero-sub {
-  font-family: var(--f-body);
-  font-size: 16px;
-  font-weight: 400;
-  color: rgba(255,255,255,0.72);
-  max-width: 480px;
-  line-height: 1.6;
-  margin-bottom: var(--sp-7);
-  letter-spacing: 0.01em;
-}
-
-.hero-cta {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-5);
-  flex-wrap: wrap;
-}
-
-/* Override ghost button colors on dark hero */
-.hero .btn-ghost {
-  color: rgba(255,255,255,0.85);
-  border-color: rgba(255,255,255,0.4);
-}
-.hero .btn-ghost:hover {
-  background: rgba(255,255,255,0.15);
-  color: #fff;
-  border-color: rgba(255,255,255,0.7);
-}
-
-.hero-scroll-hint {
-  position: absolute;
-  bottom: var(--sp-7);
-  right: var(--sp-8);
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: var(--sp-2);
-  z-index: 2;
-}
-
-.hero-scroll-hint span {
-  font-size: 9px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,0.45);
-}
-
-.scroll-line {
-  width: 1px;
-  height: 55px;
-  background: linear-gradient(to bottom, rgba(255,175,55,0.8), transparent);
-  animation: scrollLine 2.2s ease-in-out infinite;
-}
-
-@keyframes scrollLine {
-  0%   { transform: scaleY(0); transform-origin: top;    opacity: 1; }
-  55%  { transform: scaleY(1); transform-origin: top;    opacity: 1; }
-  100% { transform: scaleY(1); transform-origin: bottom; opacity: 0; }
-}
 
 /* ─────────────────────────────────────────
    MARQUEE

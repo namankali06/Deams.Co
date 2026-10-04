@@ -5,6 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { TextPlugin } from 'gsap/TextPlugin';
 import Lenis from 'lenis';
 import { initJourneyResponsive } from './journey.js';
+import { initWireTerrain } from './wire-terrain.js';
 
 /* ══════════════════════════════════════════════════════
    PORTFOLIO — Script.js
@@ -50,128 +51,8 @@ document.addEventListener('DOMContentLoaded', () => {
      2. WEBGL FLUID SHADER HERO
   ══════════════════════════════ */
   const canvas = document.getElementById('heroCanvas');
-
   if (canvas) {
-    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-    if (gl) {
-      const vsSource = `
-        attribute vec2 a_pos;
-        void main() { gl_Position = vec4(a_pos, 0.0, 1.0); }
-      `;
-      const fsSource = `
-        precision highp float;
-        uniform float u_time;
-        uniform vec2  u_res;
-        uniform vec2  u_mouse;
-
-        vec2 hash2(vec2 p) {
-          p = vec2(dot(p, vec2(127.1, 311.7)), dot(p, vec2(269.5, 183.3)));
-          return -1.0 + 2.0 * fract(sin(p) * 43758.5453123);
-        }
-
-        float noise(vec2 p) {
-          vec2 i = floor(p); vec2 f = fract(p);
-          vec2 u = f * f * (3.0 - 2.0 * f);
-          return mix(
-            mix(dot(hash2(i+vec2(0,0)), f-vec2(0,0)), dot(hash2(i+vec2(1,0)), f-vec2(1,0)), u.x),
-            mix(dot(hash2(i+vec2(0,1)), f-vec2(0,1)), dot(hash2(i+vec2(1,1)), f-vec2(1,1)), u.x), u.y);
-        }
-
-        float fbm(vec2 p) {
-          float v = 0.0, a = 0.5;
-          mat2 r = mat2(cos(0.5), sin(0.5), -sin(0.5), cos(0.5));
-          for (int i = 0; i < 5; i++) { v += a * noise(p); p = r*p*2.0+vec2(0.1*float(i)); a*=0.5; }
-          return v;
-        }
-
-        void main() {
-          vec2 uv = gl_FragCoord.xy / u_res;
-          vec2 st = uv * 2.0 - 1.0;
-          st.x *= u_res.x / u_res.y;
-          float t = u_time * 0.18;
-          vec2 mouse = u_mouse * 2.0 - 1.0;
-          mouse.x *= u_res.x / u_res.y;
-
-          vec2 q = vec2(fbm(st + vec2(0.0,0.0) + t*0.3), fbm(st + vec2(5.2,1.3) + t*0.25));
-          vec2 r = vec2(fbm(st + 3.0*q + vec2(1.7,9.2) + t*0.2), fbm(st + 3.0*q + vec2(8.3,2.8) + t*0.15));
-          vec2 mDiff = st - mouse;
-          float mInfluence = smoothstep(1.2, 0.0, length(mDiff)) * 0.35;
-          r += mDiff * mInfluence;
-          float f = fbm(st + 3.5 * r);
-
-          vec3 colA = vec3(0.929, 0.894, 0.835);
-          vec3 colB = vec3(1.000, 0.686, 0.216);
-          vec3 colC = vec3(0.337, 0.243, 0.231);
-          vec3 colD = vec3(0.820, 0.600, 0.380);
-
-          vec3 col = mix(colA, colD, clamp(f*f*4.0,0.0,1.0));
-          col = mix(col, colB, clamp(f*2.0-0.5,0.0,1.0)*0.7);
-          col = mix(col, colC, clamp(r.y*1.5,0.0,1.0)*0.3);
-
-          vec2 orbC = vec2(0.65*(u_res.x/u_res.y), -0.3);
-          float od = length(st-orbC);
-          col += vec3(1.0,0.72,0.18) * (exp(-od*od*1.8) + exp(-od*od*0.5)*0.3) * 0.9;
-          vec2 orb2C = vec2(-0.9, 0.4+sin(t*0.4)*0.1);
-          col += vec3(0.95,0.65,0.25) * exp(-length(st-orb2C)*length(st-orb2C)*4.5)*0.4;
-
-          float vig = 1.0 - length(uv-0.5)*1.1;
-          col *= clamp(vig,0.3,1.0);
-          col += (fract(sin(dot(gl_FragCoord.xy,vec2(12.9898,78.233)))*43758.5453)-0.5)*0.018;
-          gl_FragColor = vec4(clamp(col,0.0,1.0), 1.0);
-        }
-      `;
-
-      function compileShader(src, type) {
-        const sh = gl.createShader(type);
-        gl.shaderSource(sh, src); gl.compileShader(sh);
-        if (!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) { console.warn(gl.getShaderInfoLog(sh)); return null; }
-        return sh;
-      }
-
-      const vs = compileShader(vsSource, gl.VERTEX_SHADER);
-      const fs = compileShader(fsSource, gl.FRAGMENT_SHADER);
-      if (vs && fs) {
-        const prog = gl.createProgram();
-        gl.attachShader(prog, vs); gl.attachShader(prog, fs);
-        gl.linkProgram(prog); gl.useProgram(prog);
-
-        const buf = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]), gl.STATIC_DRAW);
-        const aPos = gl.getAttribLocation(prog, 'a_pos');
-        gl.enableVertexAttribArray(aPos);
-        gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
-
-        const uTime = gl.getUniformLocation(prog, 'u_time');
-        const uRes  = gl.getUniformLocation(prog, 'u_res');
-        const uMouse= gl.getUniformLocation(prog, 'u_mouse');
-
-        let mx=0.5, my=0.5, tmx=0.5, tmy=0.5;
-        document.addEventListener('mousemove', (e) => {
-          tmx = e.clientX / window.innerWidth;
-          tmy = 1.0 - e.clientY / window.innerHeight;
-        });
-
-        const resizeGL = () => {
-          canvas.width  = canvas.offsetWidth  * Math.min(devicePixelRatio, 1.5);
-          canvas.height = canvas.offsetHeight * Math.min(devicePixelRatio, 1.5);
-          gl.viewport(0, 0, canvas.width, canvas.height);
-        };
-        resizeGL();
-        window.addEventListener('resize', resizeGL);
-
-        const t0 = performance.now();
-        (function loop() {
-          mx += (tmx-mx)*0.04; my += (tmy-my)*0.04;
-          const elapsed = (performance.now()-t0)/1000;
-          gl.uniform1f(uTime, elapsed);
-          gl.uniform2f(uRes, canvas.width, canvas.height);
-          gl.uniform2f(uMouse, mx, my);
-          gl.drawArrays(gl.TRIANGLES, 0, 6);
-          requestAnimationFrame(loop);
-        })();
-      }
-    }
+    initWireTerrain(canvas);
   }
 
 
@@ -226,43 +107,9 @@ document.addEventListener('DOMContentLoaded', () => {
      6. HERO ENTRANCE — Cinematic stagger clip reveal
   ══════════════════════════════════════════════════ */
   gsap.set('.hero-title .line', { yPercent: 110, opacity: 0 });
-  gsap.set('.hero-eyebrow',     { opacity: 0, y: 24 });
-  gsap.set('.hero-sub',         { opacity: 0, y: 32 });
-  gsap.set('.hero-cta',         { opacity: 0, y: 28 });
-  gsap.set('.hero-scroll-hint', { opacity: 0 });
 
   gsap.timeline({ delay: 0.2 })
-    .to('.hero-eyebrow',       { opacity:1, y:0, duration:0.9,  ease: SOFT })
-    .to('.hero-title .line',   { yPercent:0, opacity:1, duration:1.3, ease:EXPO_G }, '-=0.55')
-    .to('.hero-sub',           { opacity:1, y:0, duration:1.0,  ease: SOFT }, '-=0.75')
-    .to('.hero-cta',           { opacity:1, y:0, duration:0.85, ease: SOFT }, '-=0.72')
-    .to('.hero-scroll-hint',   { opacity:1,       duration:0.75, ease: SOFT }, '-=0.35');
-
-  /* ══════════════════════════════════════════════════
-     6b. TYPEWRITER EFFECT
-  ══════════════════════════════════════════════════ */
-  const phrases = [
-    "Deams.Co",
-    "Avant-Garde Creative Platform.",
-    "Precision-engineered experiences.",
-    "Built for brands that refuse to be invisible."
-  ];
-  
-  const typeTl = gsap.timeline({ repeat: -1, delay: 2.0 });
-  
-  phrases.forEach(phrase => {
-    typeTl.to('#typewriter-text', {
-      text: phrase,
-      duration: phrase.length * 0.08,
-      ease: "none"
-    })
-    .to('#typewriter-text', {
-      text: "",
-      duration: phrase.length * 0.04,
-      ease: "none",
-      delay: 2.5
-    });
-  });
+    .to('.hero-title .line',   { yPercent:0, opacity:1, duration:1.3, ease:EXPO_G });
 
 
   /* ══════════════════════════════════════════════════════════════
