@@ -289,11 +289,12 @@ ul { list-style: none; }
 ───────────────────────────────────────── */
 .hero {
   position: relative;
-  min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
-  align-items: flex-end;
+  align-items: center; /* Center vertically in hero */
+  justify-content: center; /* Center horizontally */
   overflow: hidden;
-  padding: 0 var(--sp-8) var(--sp-8);
+  padding: 0 var(--sp-4); /* Reduced padding for mobile */
   background: var(--c-bg);
 }
 
@@ -320,31 +321,25 @@ ul { list-style: none; }
   pointer-events: none;
 }
 
-
-
 .hero-inner {
   position: relative;
   z-index: 2;
   width: 100%;
   max-width: 1200px;
-  padding-bottom: 80px;
   perspective: 1000px; /* For GSAP 3D mouse parallax */
 }
 
 .center-content {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  padding-bottom: 0;
+  text-align: center;
+  width: 100%;
 }
 
 .hero-title {
   font-family: var(--f-display);
-  font-size: clamp(72px, 10.5vw, 148px);
+  font-size: clamp(40px, 12vw, 148px); /* Adjusted for mobile */
   font-weight: 900;
   line-height: 0.9;
-  letter-spacing: -0.04em;
+  letter-spacing: 0.05em; /* Avoid negative kerning shifting it left */
   color: #ffffff;
   text-shadow: 0 2px 40px rgba(0,0,0,0.25);
   transform-style: preserve-3d;
@@ -354,6 +349,8 @@ ul { list-style: none; }
 .centered-title {
   text-align: center;
   margin-bottom: 0;
+  width: 100%;
+  display: block;
 }
 
 /* Line-wrap clip container */
