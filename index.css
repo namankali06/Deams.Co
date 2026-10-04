@@ -396,6 +396,22 @@ ul { list-style: none; }
   will-change: transform;
 }
 
+.typewriter-cursor {
+  font-family: var(--f-display);
+  font-size: 1.1em;
+  font-weight: 300;
+  color: var(--c-accent);
+  display: inline-block;
+  margin-left: 0.1em;
+  animation: cursorBlink 0.8s infinite;
+  vertical-align: text-top;
+}
+
+@keyframes cursorBlink {
+  0%, 40% { opacity: 1; }
+  60%, 100% { opacity: 0; }
+}
+
 .hero-sub {
   font-family: var(--f-body);
   font-size: 16px;

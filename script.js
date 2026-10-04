@@ -2,6 +2,7 @@
 
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { TextPlugin } from 'gsap/TextPlugin';
 import Lenis from 'lenis';
 import { initJourneyResponsive } from './journey.js';
 
@@ -12,7 +13,7 @@ import { initJourneyResponsive } from './journey.js';
    Motion: cubic-bezier(0.19, 1, 0.22, 1) — "expo out"
 ══════════════════════════════════════════════════════ */
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, TextPlugin);
 
 /* ─────────────────────────────────────────
    EASING CONSTANTS (from design.md)
@@ -232,10 +233,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
   gsap.timeline({ delay: 0.2 })
     .to('.hero-eyebrow',       { opacity:1, y:0, duration:0.9,  ease: SOFT })
-    .to('.hero-title .line',   { yPercent:0, opacity:1, duration:1.3, stagger:0.10, ease:EXPO_G }, '-=0.55')
+    .to('.hero-title .line',   { yPercent:0, opacity:1, duration:1.3, ease:EXPO_G }, '-=0.55')
     .to('.hero-sub',           { opacity:1, y:0, duration:1.0,  ease: SOFT }, '-=0.75')
     .to('.hero-cta',           { opacity:1, y:0, duration:0.85, ease: SOFT }, '-=0.72')
     .to('.hero-scroll-hint',   { opacity:1,       duration:0.75, ease: SOFT }, '-=0.35');
+
+  /* ══════════════════════════════════════════════════
+     6b. TYPEWRITER EFFECT
+  ══════════════════════════════════════════════════ */
+  const phrases = [
+    "Deams.Co",
+    "Avant-Garde Creative Platform.",
+    "Precision-engineered experiences.",
+    "Built for brands that refuse to be invisible."
+  ];
+  
+  const typeTl = gsap.timeline({ repeat: -1, delay: 2.0 });
+  
+  phrases.forEach(phrase => {
+    typeTl.to('#typewriter-text', {
+      text: phrase,
+      duration: phrase.length * 0.08,
+      ease: "none"
+    })
+    .to('#typewriter-text', {
+      text: "",
+      duration: phrase.length * 0.04,
+      ease: "none",
+      delay: 2.5
+    });
+  });
 
 
   /* ══════════════════════════════════════════════════════════════
