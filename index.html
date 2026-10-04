@@ -65,8 +65,16 @@
   <section class="section work-section" id="work" style="position: relative; overflow: hidden; min-height: 100dvh; display: flex; align-items: center; justify-content: center;">
     <!-- Mood Field Background Canvas -->
     <canvas id="moodFieldCanvas" style="position: absolute; inset: 0; width: 100%; height: 100%; display: block; z-index: 0;"></canvas>
-    <div style="position: relative; z-index: 1;">
-        <!-- Any future work section content can go here -->
+    <div id="imageStreamContainer" style="position: absolute; inset: 0; z-index: 1; pointer-events: none;"></div>
+    
+    <!-- Title Over the Stream -->
+    <div style="position: relative; z-index: 2; text-align: center; pointer-events: none;">
+      <h2 style="font-family: var(--f-display); font-size: clamp(32px, 8vw, 80px); font-weight: 500; color: #fff; line-height: 1.1; margin-bottom: 12px; text-shadow: 0 4px 24px rgba(0,0,0,0.5);">
+        Your work,<br>front and centre.
+      </h2>
+      <p style="font-family: var(--f-body); color: rgba(255,255,255,0.7); max-width: 400px; margin: 0 auto; font-size: 15px;">
+        A hero that leads with the images instead of describing them.
+      </p>
     </div>
   </section>
 

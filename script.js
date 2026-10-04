@@ -7,6 +7,7 @@ import Lenis from 'lenis';
 import { initJourneyResponsive } from './journey.js';
 import { initWireTerrain } from './wire-terrain.js';
 import { initMoodField } from './mood-field.js';
+import { initImageStream } from './image-stream.js';
 
 /* ══════════════════════════════════════════════════════
    PORTFOLIO — Script.js
@@ -59,6 +60,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const moodCanvas = document.getElementById('moodFieldCanvas');
   if (moodCanvas) {
     initMoodField(moodCanvas);
+  }
+
+  const imageStreamContainer = document.getElementById('imageStreamContainer');
+  if (imageStreamContainer) {
+    initImageStream(imageStreamContainer);
   }
 
 
