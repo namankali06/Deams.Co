@@ -97,8 +97,9 @@ class WorksWheel {
     
     const w = this.stage.w;
     const h = this.stage.h;
-    
-    const cardW = Math.min(h * CARD_H * CARD_RATIO, w * CARD_MAX_W);
+    const isMobile = w <= 768;
+    const maxW = isMobile ? 0.55 : CARD_MAX_W;
+    const cardW = Math.min(h * CARD_H * CARD_RATIO, w * maxW);
     const cardH = cardW / CARD_RATIO;
     const drumR = cardH * DRUM;
     const ringR = cardH * RING_R;
